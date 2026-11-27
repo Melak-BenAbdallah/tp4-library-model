@@ -1,0 +1,70 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+abstract class Member {
+  - memberNumber : String
+  - name : String
+  - email : String
+  + {abstract} maxLoans() : Integer
+  + canBorrow() : Boolean
+}
+
+class StudentMember {
+  - level : String
+  + maxLoans() : Integer
+}
+
+class TeacherMember {
+  - department : String
+  + maxLoans() : Integer
+}
+
+class Loan {
+  - loanDate : Date
+  - dueDate : Date
+  - returnDate : Date [0..1]
+  + isLate() : Boolean
+}
+
+class Copy {
+  - inventoryNumber : String
+  - status : CopyStatus
+  + isAvailable() : Boolean
+}
+
+class Reservation {
+  - date : Date
+}
+
+class Book {
+  - isbn : String
+  - title : String
+  - year : Integer
+}
+
+class Author {
+  - name : String
+}
+
+enum CopyStatus {
+  AVAILABLE
+  BORROWED
+  LOST
+}
+
+Member <|-- StudentMember
+Member <|-- TeacherMember
+
+Member "1" --right-- "0..*" Loan
+Loan "0..*" --right-- "1" Copy
+Member "1" --down-- "0..*" Reservation
+Reservation "0..*" --right-- "1" Book
+Copy "0..*" --down-- "1" Book
+Book "1..*" --down-- "1..*" Author
+
+' Invisible links to keep Reservation to the right of TeacherMember, matching Figure 1
+TeacherMember -[hidden]right- Reservation
+Reservation -[hidden]right- CopyStatus
+
+@enduml

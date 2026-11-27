@@ -1,0 +1,82 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam nodesep 60
+hide circle
+
+abstract class Member {
+  - memberNumber : String
+  - name : String
+  - email : String
+  + {abstract} maxLoans() : int
+  + activeLoansCount() : int
+  + canBorrow() : boolean
+  + borrow(copy : Copy, loanDate : LocalDate, dueDate : LocalDate) : Loan
+  + reserve(book : Book, date : LocalDate) : Reservation
+}
+
+class StudentMember {
+  - level : String
+  + maxLoans() : int
+}
+
+class TeacherMember {
+  - department : String
+  + maxLoans() : int
+}
+
+class Loan {
+  - loanDate : LocalDate
+  - dueDate : LocalDate
+  - returnDate : LocalDate
+  + isLate(today : LocalDate) : boolean
+  + isInProgress() : boolean
+  + close(returnDate : LocalDate) : void
+}
+
+class Copy {
+  - inventoryNumber : String
+  - status : CopyStatus
+  + isAvailable() : boolean
+  + currentLoan() : Loan
+  + returnCopy(returnDate : LocalDate) : void
+}
+
+class Reservation {
+  - date : LocalDate
+}
+
+class Book {
+  - isbn : String
+  - title : String
+  - year : int
+  + availableCopies() : int
+  + firstReservation() : Reservation
+}
+
+class Author {
+  - name : String
+}
+
+enum CopyStatus {
+  AVAILABLE
+  BORROWED
+  LOST
+}
+
+' --- Generalization ---
+Member <|-- StudentMember
+Member <|-- TeacherMember
+
+' --- Navigable Associations with Role Names & Multiplicities ---
+Member "member 1" <--> "loans 0..*" Loan
+Loan "loans 0..*" <--> "copy 1" Copy
+Member "member 1" <--> "reservations 0..*" Reservation
+Reservation "reservations 0..*" <--> "book 1" Book
+Copy "copies 0..*" <--> "book 1" Book
+Book "0..*" --> "authors 1..*" Author
+
+' --- Layout Alignment ---
+TeacherMember -[hidden]right- Reservation
+Reservation -[hidden]right- CopyStatus
+
+@enduml
