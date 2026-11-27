@@ -2,6 +2,7 @@ package library.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,6 +83,7 @@ public class Book {
         Objects.requireNonNull(reservation, "reservation must not be null");
         if (!reservations.contains(reservation)) {
             reservations.add(reservation);
+            reservations.sort(Comparator.comparing(Reservation::getDate));
         }
     }
 

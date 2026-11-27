@@ -10,7 +10,7 @@ abstract class Member {
   + {abstract} maxLoans() : int
   + activeLoansCount() : int
   + canBorrow() : boolean
-  + borrow(copy : Copy, loanDate : LocalDate, dueDate : LocalDate) : Loan
+  + borrow(copy : Copy, loanDate : LocalDate) : Loan
   + reserve(book : Book, date : LocalDate) : Reservation
 }
 
@@ -37,7 +37,8 @@ class Copy {
   - inventoryNumber : String
   - status : CopyStatus
   + isAvailable() : boolean
-  + currentLoan() : Loan
+  + getCurrentLoan() : Loan
+  + markLost() : void
   + returnCopy(returnDate : LocalDate) : void
 }
 
@@ -73,7 +74,7 @@ Loan "loans 0..*" <--> "copy 1" Copy
 Member "member 1" <--> "reservations 0..*" Reservation
 Reservation "reservations 0..*" <--> "book 1" Book
 Copy "copies 0..*" <--> "book 1" Book
-Book "0..*" --> "authors 1..*" Author
+Book "books 0..*" <--> "authors 1..*" Author
 
 ' --- Layout Alignment ---
 TeacherMember -[hidden]right- Reservation

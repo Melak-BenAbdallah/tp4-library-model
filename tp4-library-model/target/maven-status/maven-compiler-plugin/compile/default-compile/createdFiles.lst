@@ -1,0 +1,9 @@
+library\model\Member.class
+library\model\StudentMember.class
+library\model\TeacherMember.class
+library\model\Author.class
+library\model\CopyStatus.class
+library\model\Book.class
+library\model\Copy.class
+library\model\Loan.class
+library\model\Reservation.class

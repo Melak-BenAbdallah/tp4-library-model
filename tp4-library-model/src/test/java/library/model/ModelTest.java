@@ -124,13 +124,13 @@ class ModelTest {
     void reservationsAreKeptInOrder() {
         Member teacher = new TeacherMember("T-01", "Teacher 1", "t1@example.org", "CS");
 
-        Reservation r1 = student.reserve(book, DAY);
-        Reservation r2 = teacher.reserve(book, DAY.plusDays(1));
+        Reservation later = student.reserve(book, DAY.plusDays(2));
+        Reservation older = teacher.reserve(book, DAY);
 
-        assertEquals(List.of(r1, r2), book.getReservations());
-        assertEquals(r1, book.firstReservation());
-        assertEquals(List.of(r1), student.getReservations());
-        assertEquals(List.of(r2), teacher.getReservations());
+        assertEquals(List.of(older, later), book.getReservations());
+        assertEquals(older, book.firstReservation());
+        assertEquals(List.of(later), student.getReservations());
+        assertEquals(List.of(older), teacher.getReservations());
     }
 
     @Test
